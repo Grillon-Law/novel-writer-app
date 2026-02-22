@@ -391,6 +391,7 @@
             elements.chatContainer.innerHTML = '<div class="text-center text-gray-400 dark:text-gray-500 text-sm py-8"><p>开始创作...</p></div>';
             renderSceneList();
             updateMobileSceneBar();
+            updateSendBtnStatus();
             saveToStorage();
         }
 
@@ -626,10 +627,18 @@
             }
         });
 
-        // 自动调整输入框高度
+        // 更新发送按钮状态
+        function updateSendBtnStatus() {
+            const hasInput = elements.userInput.value.trim().length > 0;
+            const hasScene = app.currentSceneId !== null;
+            elements.sendBtn.disabled = !hasInput || !hasScene || app.isLoading;
+        }
+
+        // 自动调整输入框高度并检查按钮状态
         elements.userInput.addEventListener('input', () => {
             elements.userInput.style.height = 'auto';
             elements.userInput.style.height = Math.min(elements.userInput.scrollHeight, 96) + 'px';
+            updateSendBtnStatus();
         });
 
         // 虚拟键盘避让
